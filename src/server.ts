@@ -4,6 +4,8 @@ import cors from "cors"
 import helmet from "helmet"
 import { auth } from "express-openid-connect"
 import { config } from "./config/auth.config"
+import userRouter from "./routes/user.route"
+
 dotenv.config()
 
 const server: Express = express()
@@ -22,6 +24,8 @@ server.use(auth(config))
 server.get("/auth", (req: Request, res: Response) => {
   res.send(req.oidc.isAuthenticated() ? "Logged in" : "Logged out")
 })
+
+server.use("/users", userRouter)
 server
   .listen(port, () => {
     console.log(`${env} server running on port ${port}`)
