@@ -1,11 +1,10 @@
 import express, { Express, Request, Response } from "express"
 import dotenv from "dotenv"
 import cors from "cors"
+import userRouter from "./routes/user.route"
 import helmet from "helmet"
 import { auth } from "express-openid-connect"
 import { config } from "./config/auth.config"
-import userRouter from "./routes/user.route"
-
 dotenv.config()
 
 const server: Express = express()
@@ -17,15 +16,14 @@ server.use(cors())
 server.use(express.json())
 
 server.get("/", (req: Request, res: Response) => {
-  res.send("Hello, MedPharma App!")
+  res.send("Hello, Todo App!")
 })
+server.use("/users", userRouter)
 
 server.use(auth(config))
 server.get("/auth", (req: Request, res: Response) => {
   res.send(req.oidc.isAuthenticated() ? "Logged in" : "Logged out")
 })
-
-server.use("/users", userRouter)
 server
   .listen(port, () => {
     console.log(`${env} server running on port ${port}`)
