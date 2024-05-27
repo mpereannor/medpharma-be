@@ -3,27 +3,45 @@ import dotenv from "dotenv"
 import cors from "cors"
 import userRouter from "./routes/user.route"
 import helmet from "helmet"
-import { auth } from "express-openid-connect"
-import { config } from "./config/auth.config"
+import { auth } from "express-oauth2-jwt-bearer"
+import { authConfig } from "./config/auth.config"
+import consultationRouter from "./routes/consultation.route"
 dotenv.config()
 
 const server: Express = express()
 const port: string | number = process.env.PORT || 8000
 const env: string = process.env.NODE_ENV || "development"
 
+server.use(
+  cors({
+    origin: "*",
+  })
+)
 server.use(helmet())
-server.use(cors())
 server.use(express.json())
 
-server.get("/", (req: Request, res: Response) => {
-  res.send("Hello, Todo App!")
-})
-server.use("/users", userRouter)
+server.use(
+  auth({
+    issuerBaseURL: authConfig.issuerBaseURL,
+    audience: authConfig.audience,
+  })
+)
 
-server.use(auth(config))
-server.get("/auth", (req: Request, res: Response) => {
-  res.send(req.oidc.isAuthenticated() ? "Logged in" : "Logged out")
+server.get("/", (req: Request, res: Response) => {
+  res.json({
+    message: `Hello, Welcome MedPharma Server!`,
+  })
 })
+
+server.get("/api/private", (req: Request, res: Response) => {
+  res.json({
+    message: `Hello, ${req.auth?.payload.sub} MedPharma Server!`,
+  })
+})
+
+server.use("/users", userRouter)
+server.use("/consultations", consultationRouter)
+
 server
   .listen(port, () => {
     console.log(`${env} server running on port ${port}`)
