@@ -19,35 +19,27 @@ model User {
   email        String     @unique
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
-  consultationsOfficer Consultation[] @relation("ConsultationsOfficer")
-  consultationsPatient Consultation[] @relation("ConsultationsPatient")
-  role          UserRole
+  consultations     Consultation[]
 }
 
 model Consultation {
   id           String     @id @default(cuid())
   title        String
   description String
+  healthcareProvider String
+  medicalCondition String
+  consultationType ConsultationType
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
-  healthcareProvider String
-  consultationType ConsultationType
-  medicalCondition String
   officerId   String
-  officer      User       @relation("ConsultationsOfficer", fields: [officerId], references: [id])
-  patientId     String
-  patient        User       @relation("ConsultationsPatient", fields: [patientId], references: [id])
+  patient      String
+  officer      User       @relation(fields: [officerId], references: [id])
 }
 
-
-enum UserRole {
-  OFFICER
-  PATIENT
-}
 
 enum ConsultationType {
-  IN_PATIENT
-  OUT_PATIENT
+  INPATIENT
+  OUTPATIENT
   REMOTELY
 }
 
