@@ -26,3 +26,17 @@ export const getUserById = async (req: Request, res: Response) => {
     console.log(e)
   }
 }
+
+
+export const createUser = async (req: Request, res: Response) => {
+  try {
+    const userData = req.body
+    const user = await userClient.create({
+      data: userData,
+    })
+
+    res.status(201).json({ data: user })
+  } catch (e) {
+    console.log(e)
+  }
+}
