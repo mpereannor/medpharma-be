@@ -2,6 +2,7 @@
 
 MedPharma is a web application for managing consultations in a health facility. This repository contains the backend server for the application.
 
+Server deployed at [[https://medpharma-be.onrender.com/]]
 ## Getting Started
 
 To get started with MedPharma, follow these steps:
