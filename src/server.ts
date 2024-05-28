@@ -1,7 +1,6 @@
 import express, { Express, Request, Response } from "express"
 import dotenv from "dotenv"
 import cors from "cors"
-import userRouter from "./routes/user.route"
 import helmet from "helmet"
 import { auth } from "express-oauth2-jwt-bearer"
 import { authConfig } from "./config/auth.config"
@@ -39,7 +38,6 @@ server.get("/api/private", (req: Request, res: Response) => {
   })
 })
 
-server.use("/users", userRouter)
 server.use("/consultations", consultationRouter)
 
 server
