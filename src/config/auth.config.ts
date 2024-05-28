@@ -1,3 +1,6 @@
+import dotenv from "dotenv"
+dotenv.config()
+
 export const authConfig = {
   authRequired: false,
   auth0Logout: true,
