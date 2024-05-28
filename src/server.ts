@@ -5,6 +5,7 @@ import helmet from "helmet"
 import { auth } from "express-oauth2-jwt-bearer"
 import { authConfig } from "./config/auth.config"
 import consultationRouter from "./routes/consultation.route"
+import userRouter from "./routes/user.route"
 dotenv.config()
 
 const server: Express = express()
@@ -38,6 +39,7 @@ server.get("/api/private", (req: Request, res: Response) => {
   })
 })
 
+server.use("/users", userRouter)
 server.use("/consultations", consultationRouter)
 
 server
